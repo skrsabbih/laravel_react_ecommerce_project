@@ -6,15 +6,19 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TempImageController;
+use App\Http\Controllers\Front\ProductController as FrontProductController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
-
+// login route
 Route::post('/admin/administration', [AuthController::class, 'authenticate']);
-
-// protected route
+// frontend product route lastest product
+Route::get('/latest-products', [FrontProductController::class, 'latestProduct']);
+// frontend product route featured product
+Route::get('/featured-products', [FrontProductController::class, 'featuredProduct']);
+// protected route for admin panel
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('brands', BrandController::class);

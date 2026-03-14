@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -158,8 +159,22 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        // load the relationship
+        $product->load('product_images');
+
+        // delete the product images path
+        if ($product->product_images) {
+            foreach ($product->product_images as $image) {
+                File::delete([
+                    public_path('uploads/products/large/' . $image->image),
+                    public_path('uploads/products/small/' . $image->image)
+                ]);
+            }
+        }
+
         // delete the product by id
         $product->delete();
+
         return response()->json([
             'status' => 200,
             'message' => 'Product Deleted Successfully',
@@ -240,15 +255,11 @@ class ProductController extends Controller
             ], 404);
         }
 
-        // delete the large file path
-        if (file_exists(public_path('uploads/products/large/' . $image->image))) {
-            unlink(public_path('uploads/products/large/' . $image->image));
-        }
-
-        // delete the small file path
-        if (file_exists(public_path('uploads/products/small/' . $image->image))) {
-            unlink(public_path('uploads/products/small/' . $image->image));
-        }
+        // delete the large file path and small file path
+        File::delete([
+            public_path('uploads/products/large/' . $image->image),
+            public_path('uploads/products/small/' . $image->image)
+        ]);
 
         $image->delete();
 

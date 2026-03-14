@@ -174,29 +174,18 @@ http://localhost:5173
 
 # 📸 Project Screenshots
 
-Add your screenshots inside a folder called **screenshots** in the repository.
+### 🏠 Home Page
+![Home Page](screenshots/home.png)
 
-Example:
+---
 
-```
-screenshots/
-home.png
-product.png
-admin-dashboard.png
-```
+### 📦 Product Page
+![Product Page](screenshots/product.png)
 
-Then add them like this:
+---
 
-```markdown
-## Home Page
-![Home](screenshots/home.png)
-
-## Product Page
-![Product](screenshots/product.png)
-
-## Admin Dashboard
-![Dashboard](screenshots/admin-dashboard.png)
-```
+### ⚙️ Admin Dashboard
+![Dashboard](screenshots/dashboard.png)
 
 ---
 

@@ -22,6 +22,7 @@ class ProductController extends Controller
             'data' => $products
         ], 200);
     }
+    // this is for featured product
     public function featuredProduct()
     {
         $products = Product::latest()
@@ -34,6 +35,23 @@ class ProductController extends Controller
             'status' => 200,
             'message' => 'Featured Product Fetched Successfully',
             'data' => $products
+        ], 200);
+    }
+
+    // fetch single product for product page
+    public function singleProduct(Product $product)
+    {
+        $product->load(['sizes', 'product_images']);
+        if ($product == null) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Product Not Found',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Single Product Fetched Successfully',
+            'data' => $product
         ], 200);
     }
 }

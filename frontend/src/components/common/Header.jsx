@@ -1,9 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Logo from '../../assets/images/logo.png';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../common/http';
+import Loader from '../common/Loader';
 const Header = () => {
+    //state management
+    const [productCategory, setProductCategory] = useState([]);
+    const [loading, setLoading] = useState(false);
+    // fetch the category for header section dynamic by api
+    useEffect(() => {
+        const fetchCategory = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`${apiUrl}/header-categories`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+                });
+
+                const result = await res.json();
+                // console.log(result);
+                if (result.status === 200) {
+                    setProductCategory(result.data || []);
+                } else {
+                    console.log("Something went wrong");
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchCategory();
+    }, []);
     return (
         <header className='shadow'>
             {/* header upper part start */}
@@ -20,15 +53,33 @@ const Header = () => {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
+
                         <Nav
                             className="ms-auto my-2 my-lg-0"
                             navbarScroll
                         >
-                            <Nav.Link href="/shop">Fridge</Nav.Link>
-                            <Nav.Link href="#action2">Kids</Nav.Link>
-                            <Nav.Link href="#action2">Mens</Nav.Link>
-                            <Nav.Link href="#action2">Mobiles</Nav.Link>
-                            <Nav.Link href="#action2">Women</Nav.Link>
+                            {
+                                loading == true && <Loader />
+                            }
+                            {
+                                loading == false && productCategory.length == 0 && <p className='ms-auto my-2 my-lg-0'>No Category</p>
+                            }
+                            {
+                                loading == false && productCategory.length > 0
+                            }
+                            {
+                                productCategory && productCategory.map((category) => {
+                                    return (
+                                        <Link
+                                            to={`/shop?category=${category.id}`}
+                                            className="nav-link"
+                                            key={category.id}
+                                        >
+                                            {category.name}
+                                        </Link>
+                                    )
+                                })
+                            }
 
                         </Nav>
                         <div className='nav-right d-flex'>

@@ -73,7 +73,7 @@ const Show = () => {
     return (
         <Layout>
             <div className='container'>
-                <div className="row">
+                <div className="row mb-5">
                     <div className='d-flex justify-content-between mt-5 pb-3'>
                         <h4 className='h4 pb-0 mb-0'>Products</h4>
                         <Link className='btn btn-primary' to="/admin/products/create">Create</Link>
@@ -99,6 +99,7 @@ const Show = () => {
                                                 <th>Qty</th>
                                                 <th>Sku</th>
                                                 <th>Status</th>
+                                                <th>featured</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -125,6 +126,11 @@ const Show = () => {
                                                     <td>
                                                         {
                                                             product.status == 1 ? <span className='badge bg-success'>Active</span> : <span className='badge bg-danger'>Block</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            product.is_featured == 'yes' ? <span className='badge bg-success'>Yes</span> : <span className='badge bg-danger'>No</span>
                                                         }
                                                     </td>
 

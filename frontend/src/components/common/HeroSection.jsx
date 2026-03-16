@@ -24,6 +24,14 @@ const HeroSection = () => {
                     <div className="content" style={{ backgroundImage: `url(${SliderTwoImage})` }}>
                     </div>
                 </SwiperSlide>
+                <SwiperSlide>
+                    <div className="content" style={{ backgroundImage: `url(${SliderOneImage})` }}>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className="content" style={{ backgroundImage: `url(${SliderTwoImage})` }}>
+                    </div>
+                </SwiperSlide>
             </Swiper>
         </section>
     )

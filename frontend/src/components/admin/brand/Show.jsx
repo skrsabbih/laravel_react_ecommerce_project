@@ -79,7 +79,7 @@ const Show = () => {
     return (
         <Layout>
             <div className='container'>
-                <div className="row">
+                <div className="row mb-5">
                     <div className='d-flex justify-content-between mt-5 pb-3'>
                         <h4 className='h4 pb-0 mb-0'>Brands</h4>
                         <Link className='btn btn-primary' to="/admin/brands/create">Create</Link>

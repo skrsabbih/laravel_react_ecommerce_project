@@ -22,7 +22,7 @@ const LatestProduct = () => {
                 });
 
                 const result = await res.json();
-                console.log(result);
+                // console.log(result);
                 if (result.status === 200) {
                     setProducts(result.data || []);
                 } else {
@@ -55,13 +55,13 @@ const LatestProduct = () => {
                                         <div className='col-md-3 col-6' key={product.id}>
                                             <div className='product card border-0'>
                                                 <div className="card-img">
-                                                    <a href="#fuck">
+                                                    <a href={`/product/${product.id}`}>
                                                         <img src={product.image_url} alt="" className="w-100" srcSet="" />
                                                     </a>
                                                 </div>
 
                                                 <div className='card-body pt-3'>
-                                                    <a href="#fuck">
+                                                    <a href={`/product/${product.id}`}>
                                                         {product.title}
                                                     </a>
                                                     <div className='price'>

@@ -1,6 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FooterLogo from '../../assets/images/logo-white.png';
+import { toast } from 'react-toastify';
+import { apiUrl } from './http';
+import { Link } from 'react-router-dom';
 const Footer = () => {
+
+
+    // category api
+    const [categories, setCategory] = useState([]);
+
+    const fetchCategory = async () => {
+        try {
+            const res = await fetch(`${apiUrl}/footer-categories`, {
+                method: "GET",
+                headrers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                }
+            });
+            const result = await res.json();
+            // console.log(result);
+            if (result.status == 200) {
+                setCategory(result.data || []);
+            } else {
+                console.log("Something went wrong");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong");
+        }
+    }
+
+    // use side effect
+    useEffect(() => {
+        fetchCategory();
+    }, []);
+
     return (
         <footer className='py-5 text-white'>
             <div className='container'>
@@ -13,17 +48,18 @@ const Footer = () => {
                     </div>
                     <div className='col-md-3 pb-4'>
                         <h2 className='mb-3'>Categories</h2>
-                        <ul>
-                            <li>
-                                <a href="http://">Kids</a>
-                            </li>
-                            <li>
-                                <a href="http://">Women</a>
-                            </li>
-                            <li>
-                                <a href="http://">Mens</a>
-                            </li>
-                        </ul>
+                        {
+                            categories && categories.map((category) => {
+                                return (
+                                    <ul key={category.id}>
+                                        <li>
+                                            <Link to={`/shop?category=${category.id}`}>{category.name}</Link>
+                                        </li>
+                                    </ul>
+                                )
+                            })
+                        }
+
                     </div>
                     <div className='col-md-3 pb-4'>
                         <h2 className='mb-3'>Quick Links</h2>

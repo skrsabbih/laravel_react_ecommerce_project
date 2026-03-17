@@ -21,4 +21,18 @@ class CategoryController extends Controller
             'data' => $categories
         ]);
     }
+
+    // footer category
+    public function footerCategory()
+    {
+        $categories = Category::latest()
+            ->where('status', 1)
+            ->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Footer Fetch Category Successfully',
+            'data' => $categories
+        ]);
+    }
 }

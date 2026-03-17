@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Layout from './common/Layout'
 import { Link, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,6 +11,8 @@ import { Rating } from 'react-simple-star-rating'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { apiUrl } from './common/http';
+import { CartContext } from './context/CartContext';
+import { toast } from 'react-toastify';
 
 const Product = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -20,8 +22,13 @@ const Product = () => {
     const [product, setProduct] = useState([]);
     const [productImages, setProductImages] = useState([]);
 
+    // size state for add to cart
+    const [selectedSize, setSelectedSize] = useState(null);
+
     // use a id params
     const { id } = useParams();
+    // import the cartcontext for add to cart mane se use korbe addToCart function er data
+    const { addToCart } = useContext(CartContext)
 
     // single product api fetch
     const singleProduct = async () => {
@@ -34,7 +41,7 @@ const Product = () => {
                 }
             });
             const result = await res.json();
-            console.log(result);
+            // console.log(result);
             if (result.status === 200) {
                 setProduct(result.data || []);
                 setProductImages(result.data.product_images || []);
@@ -43,6 +50,26 @@ const Product = () => {
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    // handle add to cart button
+    const handleAddToCart = () => {
+        // product theke size ase kina check noile empty
+        const productSizes = product.sizes || [];
+        // first checked product size exits or not
+        if (productSizes.length > 0) {
+            // if size is exists but use not selected
+            if (selectedSize == null) {
+                toast.error("Please select a size");
+            } else {
+                // cart a product and sizes add
+                addToCart(product, selectedSize);
+                toast.success("Product added to cart Successfully !");
+            }
+        } else {
+            // if size is not exists then only product add in cart
+            addToCart(product, null);
         }
     }
 
@@ -63,7 +90,7 @@ const Product = () => {
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                                 <li className="breadcrumb-item" aria-current="page"><Link to="/shop">Shop</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">Dummy Product Title</li>
+                                <li className="breadcrumb-item active" aria-current="page">{product.title}</li>
                             </ol>
                         </nav>
                     </div>
@@ -83,7 +110,7 @@ const Product = () => {
                                     direction={`vertical`}
                                     spaceBetween={10}
                                     slidesPerView={Math.min(productImages.length || 1, 6)}
-                                    sliderToClickedSlide={true}
+                                    slidertoclickedslide="true"
                                     freeMode={true}
                                     watchSlidesProgress={true}
                                     modules={[FreeMode, Navigation, Thumbs]}
@@ -166,14 +193,17 @@ const Product = () => {
                                 {
                                     product.sizes && product.sizes.map((size) => {
                                         return (
-                                            <button className='btn btn-size me-2' key={size.id}>{size.name}</button>
+                                            <button onClick={() => setSelectedSize(size)}
+                                                className={`btn btn-size me-2 ${selectedSize?.id === size.id ? 'active' : ''} `}
+                                                key={size.id}>{size.name}</button>
                                         )
                                     })
                                 }
                             </div>
                         </div>
                         <div className="add-to-cart my-4">
-                            <button className='btn btn-primary text-uppercase'>Add To Cart</button>
+                            <button onClick={() => handleAddToCart()}
+                                className='btn btn-primary text-uppercase'>Add To Cart</button>
                         </div>
                         <hr />
                         <div>

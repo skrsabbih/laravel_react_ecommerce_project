@@ -20,6 +20,7 @@ Route::get('/latest-products', [FrontProductController::class, 'latestProduct'])
 Route::get('/featured-products', [FrontProductController::class, 'featuredProduct']);
 // frontend category route for header uses
 Route::get('/header-categories', [FrontCategoryController::class, 'headerCategory']);
+Route::get('/footer-categories', [FrontCategoryController::class, 'footerCategory']);
 // frontend category route for shop page uses
 Route::get('/shop-getCategories', [ShopController::class, 'getShopCategories']);
 // frontend brand route for shop page uses

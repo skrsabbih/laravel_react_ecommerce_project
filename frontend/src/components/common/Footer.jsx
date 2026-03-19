@@ -65,10 +65,10 @@ const Footer = () => {
                         <h2 className='mb-3'>Quick Links</h2>
                         <ul>
                             <li>
-                                <a href="http://">Login</a>
+                                <Link to="/account/login">Login</Link>
                             </li>
                             <li>
-                                <a href="http://">Register</a>
+                                <Link to="/account/registration">Register</Link>
                             </li>
                         </ul>
                     </div>

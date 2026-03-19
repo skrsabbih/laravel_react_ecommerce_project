@@ -38,7 +38,6 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         // store the product
-
         $product = Product::create($request->validated());
 
         // save the product size
@@ -67,7 +66,7 @@ class ProductController extends Controller
                 $imageName = $product->id . '_' . time() . '.' . $ext;
 
                 // better appoarch for image name generate
-                // karon droto img process hole eki loop er moddhe
+                // karon fast img process hole eki loop er moddhe
                 // same name image save hoye jabar risk thake tai
                 // niche better approach ta sikhe rakhlam
                 // $imageName = $product->id . '_' . uniqid() . '.' . $ext;
@@ -92,7 +91,7 @@ class ProductController extends Controller
                     $product->save();
                 }
 
-                // save the image into product_image table in future
+                // save the image into product_image table
                 $productImage = new ProductImage();
                 $productImage->image = $imageName;
                 $productImage->product_id = $product->id;

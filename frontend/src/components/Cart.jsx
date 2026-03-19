@@ -7,16 +7,91 @@ const Cart = () => {
     const { cartData, shipping, subTotal, grandTotal, updateCartItem, deleteCartItem } = useContext(CartContext);
     // update the cart data for quantity
     const [qty, setQty] = useState({});
-
+    // added today 
+    const [qtyErrors, setQtyErrors] = useState({});
     // handle quantity method for itemwise
-    const handleQty = (e, itemId) => {
-        // e mane event object
-        const newQty = e.target.value;
-        setQty(pre => ({ ...pre, [itemId]: newQty }));
+    // const handleQty = (e, itemId) => {
+    //     // max-min validation
+    //     let value = parseInt(e.target.value);
+    //     // if empty or none
+    //     if (isNaN(value)) value = 1;
+    //     //max and min control
+    //     if (value < 1) value = 1;
+    //     if (value > 10) value = 10;
 
-        // update cart item globally
-        updateCartItem(itemId, newQty);
-    }
+    //     e.target.value = value;
+    //     // e mane event object
+    //     const newQty = e.target.value;
+    //     setQty(pre => ({ ...pre, [itemId]: newQty }));
+
+    //     // update cart item globally
+    //     updateCartItem(itemId, newQty);
+    // }
+    // today added when user give input then its run
+    const handleQty = (e, itemId) => {
+        const rawValue = e.target.value;
+
+        // user input type korte parbe
+        setQty(prev => ({ ...prev, [itemId]: rawValue }));
+
+        // if user input is empty then get a messge and default 1
+        if (rawValue === '') {
+            setQtyErrors(prev => ({
+                ...prev,
+                [itemId]: 'Please give at least 1'
+            }));
+            return;
+        }
+
+        const value = parseInt(rawValue, 10);
+
+        if (isNaN(value)) {
+            setQtyErrors(prev => ({
+                ...prev,
+                [itemId]: 'Please give at least 1'
+            }));
+            return;
+        }
+
+        if (value < 1) {
+            setQtyErrors(prev => ({
+                ...prev,
+                [itemId]: 'Please give at least 1'
+            }));
+            return;
+        }
+
+        if (value > 10) {
+            setQtyErrors(prev => ({
+                ...prev,
+                [itemId]: 'Please If you want to order more than 10, please contact us'
+            }));
+            return;
+        }
+
+        // if all validation is success then no error
+        setQtyErrors(prev => ({
+            ...prev,
+            [itemId]: ''
+        }));
+
+        // if valid then state update
+        updateCartItem(itemId, value);
+    };
+
+    // add today if user's input box out then its run
+    const handleQtyBlur = (itemId, itemQty) => {
+        const currentValue = qty[itemId] ?? itemQty;
+
+        if (currentValue === '' || isNaN(parseInt(currentValue, 10)) || parseInt(currentValue, 10) < 1) {
+            setQty(prev => ({ ...prev, [itemId]: 1 }));
+            setQtyErrors(prev => ({
+                ...prev,
+                [itemId]: ''
+            }));
+            updateCartItem(itemId, 1);
+        }
+    };
 
     return (
         <Layout>
@@ -61,7 +136,7 @@ const Cart = () => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td valign='middle'>
+                                                {/* <td valign='middle'>
                                                     <input
                                                         style={{ width: '100px' }}
                                                         type="number"
@@ -70,7 +145,25 @@ const Cart = () => {
                                                         defaultValue={qty[item.id] || item.qty}
                                                         className='form-control'
                                                         onChange={(e) => handleQty(e, item.id)}
+
                                                     />
+                                                </td> */}
+                                                <td valign='middle'>
+                                                    <input
+                                                        style={{ width: '100px' }}
+                                                        type="number"
+                                                        min={1}
+                                                        max={10}
+                                                        value={qty[item.id] ?? item.qty}
+                                                        className={`form-control ${qtyErrors[item.id] ? 'is-invalid' : ''}`}
+                                                        onChange={(e) => handleQty(e, item.id)}
+                                                        onBlur={() => handleQtyBlur(item.id, item.qty)}
+                                                    />
+                                                    {qtyErrors[item.id] && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {qtyErrors[item.id]}
+                                                        </div>
+                                                    )}
                                                 </td>
                                                 <td valign='middle'>
                                                     <a href="#" onClick={() => deleteCartItem(item.id)}>

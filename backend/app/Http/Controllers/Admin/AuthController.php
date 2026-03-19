@@ -42,9 +42,9 @@ class AuthController extends Controller
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 401,
+                    'status' => 403,
                     'message' => 'You are not authorized to access admin panel',
-                ], 401);
+                ], 403);
             }
         } else {
             return response()->json([

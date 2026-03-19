@@ -54,12 +54,12 @@ export const CartProvider = ({ children }) => {
                 if (isProductExist) {
                     updatedCart = updatedCart.map(item => (item.product_id == product.id) ? { ...item, qty: item.qty + 1 } : item);
                 } else {
-                    // if product not exits then add in cart
+                    // if product not exits and size is null then add in cart
                     updatedCart.push({
                         id: `${product.id}-${size.id}`,
                         product_id: product.id,
-                        size_id: size.id,
-                        size_name: size.name,
+                        size_id: null,
+                        size_name: null,
                         title: product.title,
                         price: product.price,
                         qty: 1,
@@ -119,8 +119,14 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
 
+    // clear full cart globally
+    const clearCart = () => {
+        setCartData([]);
+        localStorage.removeItem('cart');
+    }
+
     return (
-        <CartContext.Provider value={{ addToCart, cartData, shipping, subTotal, grandTotal, updateCartItem, deleteCartItem, getQty }}>
+        <CartContext.Provider value={{ addToCart, cartData, shipping, subTotal, grandTotal, updateCartItem, deleteCartItem, getQty, clearCart }}>
             {children}
         </CartContext.Provider>
     )

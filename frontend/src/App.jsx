@@ -18,6 +18,11 @@ import { default as EditBrands } from './components/admin/brand/Edit.jsx'
 import { default as ShowProducts } from './components/admin/product/Show.jsx'
 import { default as CreateProducts } from './components/admin/product/Create.jsx'
 import { default as EditProducts } from './components/admin/product/Edit.jsx'
+import Registration from './components/Registration.jsx'
+import { default as FrontendLogin } from './components/Login.jsx'
+import { default as CustomerDashboard } from './components/customer/Dashboard.jsx'
+import { CustomerRequireAuth } from './components/customer/CustomerRequireAuth.jsx'
+import Confirmation from './components/Confirmation.jsx'
 
 function App() {
 
@@ -29,9 +34,10 @@ function App() {
           <Route path='/shop' element={<Shop />} />
           <Route path='/product/:id' element={<Product />} />
           <Route path='/cart' element={<Cart />} />
-          <Route path='/checkout' element={<Checkout />} />
+
           {/* admin route section */}
           <Route path='/login/administration' element={<Login />} />
+          {/* admin protected route section */}
           <Route path='/admin/dashboard' element={
             <AdminRequireAuth>
               <Dashboard />
@@ -82,6 +88,31 @@ function App() {
               <EditProducts />
             </AdminRequireAuth>
           } />
+          {/* admin route section end */}
+
+          {/* customer route section start */}
+          <Route path='/account/registration' element={<Registration />} />
+          <Route path='/account/login' element={<FrontendLogin />} />
+          {/* customer protected route section */}
+          <Route path='/account/dashboard' element={
+            <CustomerRequireAuth>
+              <CustomerDashboard />
+            </CustomerRequireAuth>
+          }
+          />
+          <Route path='/checkout' element={
+            <CustomerRequireAuth>
+              < Checkout />
+            </CustomerRequireAuth>
+          }
+          />
+          <Route path='/order/confirmation/:id' element={
+            <CustomerRequireAuth>
+              < Confirmation />
+            </CustomerRequireAuth>
+          }
+          />
+          {/* customer route section end */}
         </Routes>
       </BrowserRouter>
       <ToastContainer />

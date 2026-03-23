@@ -1,10 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { apiUrl, customerToken } from "../common/http";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [cartData, setCartData] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-
+    const [shippingCharge, setShippingCharge] = useState(0);
     const addToCart = (product, size = null) => {
         let updatedCart = [...cartData];
 
@@ -76,7 +77,12 @@ export const CartProvider = ({ children }) => {
 
     // shipping context method
     const shipping = () => {
-        return 0;
+        let shippingAmount = 0;
+        cartData.map(item => {
+            shippingAmount += item.qty * shippingCharge;
+        })
+
+        return shippingAmount;
     }
     // subtotal method
     const subTotal = () => {
@@ -124,6 +130,34 @@ export const CartProvider = ({ children }) => {
         setCartData([]);
         localStorage.removeItem('cart');
     }
+
+    // shipping api call
+    // first fetch the shipping data from api
+    useEffect(() => {
+        const shipping = async () => {
+            try {
+                const res = await fetch(`${apiUrl}/cart-shipping-cost`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${(customerToken())}`
+                    }
+                });
+
+                const result = await res.json();
+                console.log(result);
+                if (result.status === 200) {
+                    setShippingCharge(result.data.shipping_charge);
+                } else {
+                    setShippingCharge(0);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        shipping();
+    }, [])
 
     return (
         <CartContext.Provider value={{ addToCart, cartData, shipping, subTotal, grandTotal, updateCartItem, deleteCartItem, getQty, clearCart }}>

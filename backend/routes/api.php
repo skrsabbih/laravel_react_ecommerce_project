@@ -3,13 +3,16 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\TempImageController;
 use App\Http\Controllers\Front\AccountController;
 use App\Http\Controllers\Front\CategoryController as FrontCategoryController;
 use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\ProductController as FrontProductController;
+use App\Http\Controllers\Front\ShippingController as FrontShippingController;
 use App\Http\Controllers\Front\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +35,8 @@ Route::get('/shop-getBrands', [ShopController::class, 'getShopBrands']);
 Route::get('/shop-getCatBrProduct', [ShopController::class, 'getCatBrShopProduct']);
 // frontend single product route for product page uses
 Route::get('/product/{product}', [FrontProductController::class, 'singleProduct']);
+// frontend single product shipping cost route for cart page
+Route::get('/cart-shipping-cost', [FrontShippingController::class, 'getShippingCharge']);
 
 // user route registration and login users means (customer)
 Route::post('/customer-register', [AccountController::class, 'customerRegister']);
@@ -47,10 +52,19 @@ Route::group(['middleware' => ['auth:sanctum', 'checkadminRole']], function () {
     Route::post('/update-product-image', [ProductController::class, 'updateProductImage']);
     Route::get('/change-product-default-image', [ProductController::class, 'updateDefaultImage']);
     Route::delete('/delete-product-image', [ProductController::class, 'deleteProductImage']);
+    Route::get('/admin-orders', [AdminOrderController::class, 'adminOrders']);
+    Route::get('/admin-orders-details/{id}', [AdminOrderController::class, 'adminOrderDetails']);
+    Route::put('/update-order-status/{id}', [AdminOrderController::class, 'updateOrderStatus']);
+    Route::get('/shipping-charges-fetch', [ShippingController::class, 'shippingChargesFetch']);
+    Route::post('/shipping-charges-createorupdate', [ShippingController::class, 'shippingChargesUpdate']);
 });
 
 // protectd route for customer panel
 Route::group(['middleware' => ['auth:sanctum', 'checkcustomerRole']], function () {
     Route::post('/oder-place', [OrderController::class, 'saveOrder']);
     Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
+    Route::get('/customer-orders', [OrderController::class, 'customerOrders']);
+    Route::get('/customer-orders-details/{id}', [OrderController::class, 'customerOrderDetails']);
+    Route::put('/update-customer-profile', [AccountController::class, 'customerProfile']);
+    Route::get('/update-customer-profile-details', [AccountController::class, 'getDetais']);
 });

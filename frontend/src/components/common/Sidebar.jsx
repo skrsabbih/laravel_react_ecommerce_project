@@ -12,9 +12,9 @@ const Sidebar = () => {
                     <li><Link to="/admin/categories">Categories</Link></li>
                     <li><Link to="/admin/brands">Brands</Link></li>
                     <li><Link to="/admin/products">Products</Link></li>
-                    <li><a href="http://">Orders</a></li>
+                    <li><Link to="/admin/orders">Orders</Link></li>
                     <li><a href="http://">Users</a></li>
-                    <li><a href="http://">Shipping</a></li>
+                    <li><a href="/admin/shipping">Shipping</a></li>
                     <li><a href="http://">Change Password</a></li>
                     <li><a href='' onClick={logout} >Logout</a></li>
                 </ul>

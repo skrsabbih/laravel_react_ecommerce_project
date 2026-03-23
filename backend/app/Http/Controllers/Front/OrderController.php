@@ -68,6 +68,7 @@ class OrderController extends Controller
     {
         try {
             $order = Order::with('orderItems')
+                ->where('user_id', Auth::id())
                 ->where('id', $id)
                 ->first();
 
@@ -89,5 +90,48 @@ class OrderController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    // customer manage the order his dashboard
+    public function customerOrders()
+    {
+        try {
+            $user = Auth::user();
+            $orders = Order::where('user_id', $user->id) // user_id holo orders table e user er id
+                ->latest()
+                ->get();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Order Fetch Successfully',
+                'data' => $orders
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    // customer manage the order details by his id
+    public function customerOrderDetails($id)
+    {
+        $user = Auth::user();
+        $orderDetails = Order::with('orderItems', 'orderItems.product')
+            ->where('user_id', $user->id)
+            ->find($id);
+
+        if (!$orderDetails) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order details not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Order Details Fetch Successfully',
+            'data' => $orderDetails
+        ]);
     }
 }

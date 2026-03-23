@@ -8,8 +8,11 @@ const Footer = () => {
 
     // category api
     const [categories, setCategory] = useState([]);
+    // loading state management
+    const [loading, setLoading] = useState(false);
 
     const fetchCategory = async () => {
+        setLoading(true);
         try {
             const res = await fetch(`${apiUrl}/footer-categories`, {
                 method: "GET",
@@ -22,12 +25,15 @@ const Footer = () => {
             // console.log(result);
             if (result.status == 200) {
                 setCategory(result.data || []);
-            } else {
-                console.log("Something went wrong");
             }
+            // else {
+            //     console.log("Something went wrong");
+            // }
         } catch (error) {
             console.log(error);
-            toast.error("Something went wrong");
+            // toast.error("Something went wrong");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -48,6 +54,24 @@ const Footer = () => {
                     </div>
                     <div className='col-md-3 pb-4'>
                         <h2 className='mb-3'>Categories</h2>
+                        {
+                            loading &&
+                            <div className='col-md-3 pb-4'>
+                                <div className="spinner-border text-warning" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        }
+                        {/* if not category found */}
+                        {
+                            loading === false && categories.length === 0 &&
+                            <div className='col-md-3 pb-4'>
+                                No Data
+                            </div>
+                        }
+                        {
+                            loading === false && categories.length > 0
+                        }
                         {
                             categories && categories.map((category) => {
                                 return (
@@ -76,10 +100,10 @@ const Footer = () => {
                         <h2 className='mb-3'>Get in Touch</h2>
                         <ul>
                             <li>
-                                <a href="http://">+91-95XXXXXXX</a>
+                                <a href="#">+88 01764-280085</a>
                             </li>
                             <li>
-                                <a href="http://">info@example.com</a>
+                                <a href="#">sabbihkyau@gmail.com</a>
                             </li>
                         </ul>
                     </div>

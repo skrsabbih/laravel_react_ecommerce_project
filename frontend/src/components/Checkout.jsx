@@ -12,9 +12,40 @@ const Checkout = () => {
     const {
         register,
         handleSubmit,
+        reset,
         watch,
         formState: { errors },
-    } = useForm()
+    } = useForm({
+        defaultValues: async () => {
+            // setLoading(true);
+
+            const res = await fetch(`${apiUrl}/update-customer-profile-details`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${customerToken()}`
+                }
+            });
+            const result = await res.json();
+            // reset use for old data set
+            if (result.status == 200) {
+                // console.log(result);
+                reset({
+                    name: result.data.name,
+                    email: result.data.email,
+                    address: result.data.address,
+                    mobile: result.data.mobile,
+                    city: result.data.city,
+                    state: result.data.state,
+                    zip: result.data.zip
+                });
+            } else {
+                toast.error(result.message || "Something went wrong");
+            }
+            // setLoading(false);
+        }
+    })
 
     const Navigate = useNavigate();
 
@@ -77,6 +108,28 @@ const Checkout = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    // if first cart is empty then continie shopping
+    if (!cartData || cartData.length === 0) {
+        return (
+            <Layout>
+                <div className="container py-5">
+                    <div
+                        className="d-flex flex-column justify-content-center align-items-center text-center"
+                        style={{ minHeight: '60vh' }}
+                    >
+                        <h3 className="mb-3">No order found</h3>
+                        <p className="text-muted mb-4">
+                            First add an item to cart and then checkout please.
+                        </p>
+                        <Link to="/" className="btn btn-primary">
+                            Continue Shopping
+                        </Link>
+                    </div>
+                </div>
+            </Layout>
+        )
     }
 
     return (
@@ -250,11 +303,11 @@ const Checkout = () => {
                             <div className='row'>
                                 <div className='col-md-12'>
                                     <div className='d-flex justify-content-between border-bottom pb-2'>
-                                        <div>Subtotal</div>
+                                        <div>Subtotal (Product Prize)</div>
                                         <div>${subTotal()}</div>
                                     </div>
                                     <div className='d-flex justify-content-between border-bottom py-2'>
-                                        <div>Shipping</div>
+                                        <div>Delivery Charge</div>
                                         <div>${shipping()}</div>
                                     </div>
                                     <div className='d-flex justify-content-between border-bottom py-2'>

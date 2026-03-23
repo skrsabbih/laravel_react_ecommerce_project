@@ -188,11 +188,11 @@ const Cart = () => {
                     <div className='row justify-content-end'>
                         <div className='col-md-3'>
                             <div className='d-flex justify-content-between border-bottom pb-2'>
-                                <div>Subtotal</div>
+                                <div>Subtotal (Product Prize)</div>
                                 <div>${subTotal()}</div>
                             </div>
                             <div className='d-flex justify-content-between border-bottom py-2'>
-                                <div>Shipping</div>
+                                <div>Delivery Charge</div>
                                 <div>${shipping()}</div>
                             </div>
                             <div className='d-flex justify-content-between border-bottom py-2'>

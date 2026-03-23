@@ -12,7 +12,7 @@ const CustomerSidebar = () => {
             <div className='card-body p-4'>
                 <ul>
                     <li><Link to="/account/dashboard">Account</Link></li>
-                    <li><Link to="#">Orders</Link></li>
+                    <li><Link to="/account/orders">Orders</Link></li>
                     <li><Link to="#">Change Password</Link></li>
                     <li><a href='' onClick={logout} >Logout</a></li>
                 </ul>

@@ -10,6 +10,10 @@ const Confirmation = () => {
 
     // state management
     const [order, setOrder] = useState([]);
+    // loading state management
+    const [loading, setLoading] = useState(true);
+    // not found state managment
+    const [notFound, setNotFound] = useState(false);
 
     // fetch order details 
     const fetchOrder = async () => {
@@ -30,11 +34,15 @@ const Confirmation = () => {
             if (result.status === 200) {
                 setOrder(result.data);
             } else {
-                console.log("Something went wrong");
+                // console.log("Something went wrong");
+                setNotFound(true);
             }
 
         } catch (error) {
             console.log(error);
+            setNotFound(true);
+        } finally {
+            setLoading(false);
         }
 
     }
@@ -42,14 +50,30 @@ const Confirmation = () => {
     // use side effect
     useEffect(() => {
         fetchOrder();
-    }, [id]);
+    }, []);
 
-    // if order is not then return 
-    if (!order) {
+    // if no order
+    if (loading) {
         return (
             <Layout>
                 <div className='container py-5 text-center'>
-                    Loading...
+                    <div className="spinner-border text-warning" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </Layout>
+        )
+    }
+
+    // if order is null or not found 
+    if (!order || notFound) {
+        return (
+            <Layout>
+                <div className='container py-5 text-center'>
+                    <h4>Order not found</h4>
+                    <Link to="/" className="btn btn-primary mt-3">
+                        Continue Shopping
+                    </Link>
                 </div>
             </Layout>
         )
@@ -73,22 +97,35 @@ const Confirmation = () => {
                                         <strong>Order ID: </strong> # {order.id}
                                     </p>
                                     <p>
-                                        <strong>Date:  </strong> {new Date(order.created_at).toDateString()}
+                                        <strong>Date:  </strong> {order.created_at}
                                     </p>
                                     <p>
-                                        <strong>Status:  </strong>
-                                        <span className='badge bg-warning'>{order.status}</span>
+                                        <strong>Payment Status:  </strong>
+                                        {
+                                            order.payment_status === 'not paid' ?
+                                                <span className='badge bg-danger'>{order.payment_status}</span>
+                                                :
+                                                <span className='badge bg-success'>{order.payment_status}</span>
+                                        }
                                     </p>
 
                                     <p>
                                         <strong>Payment Method:  </strong>
                                         <span className='badge bg-warning'>
-                                            {order.payment_status === 'not paid' ? 'COD' : 'Stripe'}
+                                            {/* {order.payment_status === 'not paid' ? 'COD' : 'Stripe'} */}
+                                            COD
                                         </span>
                                     </p>
 
                                 </div>
                                 <div className='col-6'>
+                                    <p>
+                                        <strong>Order Status:  </strong>
+                                        {order.status === 'pending' && <span className='badge bg-warning'>Pending</span>}
+                                        {order.status === 'shipped' && <span className='badge bg-info'>Shipped</span>}
+                                        {order.status === 'delivered' && <span className='badge bg-success'>Delivered</span>}
+                                        {order.status === 'cancelled' && <span className='badge bg-danger'>Canceled</span>}
+                                    </p>
                                     <p>
                                         <strong>Customer: </strong> {order.name}
                                     </p>
@@ -128,11 +165,11 @@ const Confirmation = () => {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td className='text-end fw-bold' colSpan={3}>Subtotal</td>
+                                                <td className='text-end fw-bold' colSpan={3}>Subtotal (Product Prize)</td>
                                                 <td>${order.subtotal}</td>
                                             </tr>
                                             <tr>
-                                                <td className='text-end fw-bold' colSpan={3}>Shipping</td>
+                                                <td className='text-end fw-bold' colSpan={3}>Delivery Charge</td>
                                                 <td>${order.shipping}</td>
                                             </tr>
                                             <tr>
@@ -143,9 +180,9 @@ const Confirmation = () => {
                                     </table>
                                 </div>
                                 <div className='text-center'>
-                                    <button className='btn btn-primary'>
+                                    <Link to={`/account/orders/details/${order.id}`} className='btn btn-primary'>
                                         View Order Details
-                                    </button>
+                                    </Link>
                                     <Link className='btn btn-outline-secondary ms-2' to="/">
                                         Continue Shopping
                                     </Link>

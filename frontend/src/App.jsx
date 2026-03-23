@@ -23,6 +23,11 @@ import { default as FrontendLogin } from './components/Login.jsx'
 import { default as CustomerDashboard } from './components/customer/Dashboard.jsx'
 import { CustomerRequireAuth } from './components/customer/CustomerRequireAuth.jsx'
 import Confirmation from './components/Confirmation.jsx'
+import Order from './components/admin/Order/Order.jsx'
+import OrdersDetails from './components/admin/Order/OrdersDetails.jsx'
+import CustomerOrder from './components/customer/order/CustomerOrder.jsx'
+import CustomerOrderDetails from './components/customer/order/CustomerOrderDetails.jsx'
+import Shipping from './components/admin/shipping/Shipping.jsx'
 
 function App() {
 
@@ -88,6 +93,21 @@ function App() {
               <EditProducts />
             </AdminRequireAuth>
           } />
+          <Route path='/admin/orders' element={
+            <AdminRequireAuth>
+              <Order />
+            </AdminRequireAuth>
+          } />
+          <Route path='/admin/orders/details/:id' element={
+            <AdminRequireAuth>
+              <OrdersDetails />
+            </AdminRequireAuth>
+          } />
+          <Route path='/admin/shipping' element={
+            <AdminRequireAuth>
+              <Shipping />
+            </AdminRequireAuth>
+          } />
           {/* admin route section end */}
 
           {/* customer route section start */}
@@ -109,6 +129,18 @@ function App() {
           <Route path='/order/confirmation/:id' element={
             <CustomerRequireAuth>
               < Confirmation />
+            </CustomerRequireAuth>
+          }
+          />
+          <Route path='/account/orders' element={
+            <CustomerRequireAuth>
+              < CustomerOrder />
+            </CustomerRequireAuth>
+          }
+          />
+          <Route path='/account/orders/details/:id' element={
+            <CustomerRequireAuth>
+              < CustomerOrderDetails />
             </CustomerRequireAuth>
           }
           />

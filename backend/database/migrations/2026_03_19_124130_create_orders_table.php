@@ -24,7 +24,7 @@ return new class extends Migration
 
             // payment & order status
             $table->enum('payment_status', ['paid', 'not paid'])->default('not paid');
-            $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled', 'failed'])->default('pending');
 
             // customer info (Billing address)
             $table->string('name');

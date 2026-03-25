@@ -28,6 +28,7 @@ import OrdersDetails from './components/admin/Order/OrdersDetails.jsx'
 import CustomerOrder from './components/customer/order/CustomerOrder.jsx'
 import CustomerOrderDetails from './components/customer/order/CustomerOrderDetails.jsx'
 import Shipping from './components/admin/shipping/Shipping.jsx'
+import Practice from './components/onlypractice/Practice.jsx'
 
 function App() {
 
@@ -145,6 +146,9 @@ function App() {
           }
           />
           {/* customer route section end */}
+
+          {/* only practice not relation with this project */}
+          <Route path='/hipracticexxx' element={<Practice />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

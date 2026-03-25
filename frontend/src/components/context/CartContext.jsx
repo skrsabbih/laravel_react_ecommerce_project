@@ -146,7 +146,7 @@ export const CartProvider = ({ children }) => {
                 });
 
                 const result = await res.json();
-                console.log(result);
+                // console.log(result);
                 if (result.status === 200) {
                     setShippingCharge(result.data.shipping_charge);
                 } else {

@@ -2,11 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import Layout from './common/Layout'
 import { Link, useParams } from 'react-router-dom'
 import { apiUrl, customerToken } from './common/http'
+import { CartContext } from './context/CartContext'
 
 const Confirmation = () => {
 
     // fetch order details id
     const { id } = useParams();
+
+    // clear the cart when sslcommerz payment success
+    const { clearCart } = useContext(CartContext);
 
     // state management
     const [order, setOrder] = useState([]);
@@ -33,6 +37,7 @@ const Confirmation = () => {
 
             if (result.status === 200) {
                 setOrder(result.data);
+                clearCart();
             } else {
                 // console.log("Something went wrong");
                 setNotFound(true);
@@ -111,10 +116,22 @@ const Confirmation = () => {
 
                                     <p>
                                         <strong>Payment Method:  </strong>
-                                        <span className='badge bg-warning'>
-                                            {/* {order.payment_status === 'not paid' ? 'COD' : 'Stripe'} */}
-                                            COD
-                                        </span>
+                                        {/* {order.payment_method === 'stripe' ? <span className='badge bg-success'>Stripe</span> : <span className='badge bg-warning'>COD</span>} */}
+                                        {
+                                            order.payment_method === 'stripe' && (
+                                                <span className='badge bg-success'>Stripe</span>
+                                            )
+                                        }
+                                        {
+                                            order.payment_method === 'cod' && (
+                                                <span className='badge bg-warning'>COD</span>
+                                            )
+                                        }
+                                        {
+                                            order.payment_method === 'sslcommerz' && (
+                                                <span className='badge bg-dark'>SSLCommerz ({order.card_type})</span>
+                                            )
+                                        }
                                     </p>
 
                                 </div>

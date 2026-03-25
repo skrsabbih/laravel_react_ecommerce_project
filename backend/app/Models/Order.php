@@ -14,6 +14,7 @@ class Order extends Model
         'discount',
         'grand_total',
         'payment_status',
+        'payment_method',
         'status',
         'name',
         'email',
@@ -22,6 +23,11 @@ class Order extends Model
         'city',
         'state',
         'zip',
+        'tran_id',
+        'val_id',
+        'bank_tran_id',
+        'card_type',
+        'gateway_response',
     ];
 
     // relation with user table

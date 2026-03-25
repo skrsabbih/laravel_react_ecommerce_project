@@ -130,7 +130,23 @@ const CustomerOrderDetails = () => {
                                                     </div>
                                                     <div className='col-md-4'>
                                                         <div className='text-secondary pt-5'>Payment Method</div>
-                                                        <p><span className='badge bg-warning'>COD</span></p>
+                                                        <p>
+                                                            {
+                                                                order.payment_method === 'stripe' && (
+                                                                    <span className='badge bg-success'>Stripe</span>
+                                                                )
+                                                            }
+                                                            {
+                                                                order.payment_method === 'cod' && (
+                                                                    <span className='badge bg-warning'>COD</span>
+                                                                )
+                                                            }
+                                                            {
+                                                                order.payment_method === 'sslcommerz' && (
+                                                                    <span className='badge bg-dark'>SSLCommerz ({order.card_type})</span>
+                                                                )
+                                                            }
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div className='row'>

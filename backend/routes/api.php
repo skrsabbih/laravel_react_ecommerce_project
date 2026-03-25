@@ -61,10 +61,20 @@ Route::group(['middleware' => ['auth:sanctum', 'checkadminRole']], function () {
 
 // protectd route for customer panel
 Route::group(['middleware' => ['auth:sanctum', 'checkcustomerRole']], function () {
-    Route::post('/oder-place', [OrderController::class, 'saveOrder']);
+    Route::post('/order-place', [OrderController::class, 'saveOrder']);
     Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
     Route::get('/customer-orders', [OrderController::class, 'customerOrders']);
     Route::get('/customer-orders-details/{id}', [OrderController::class, 'customerOrderDetails']);
     Route::put('/update-customer-profile', [AccountController::class, 'customerProfile']);
     Route::get('/update-customer-profile-details', [AccountController::class, 'getDetais']);
+    Route::post('/create-customer-payment-intent', [OrderController::class, 'createPaymentIntent']);
+
+    // sslcommerz payment init route
+    Route::post('/sslcommerz/init', [OrderController::class, 'sslCommerzInit']);
 });
+
+// SSLCommerz callbacks (for sslcommerz payment validation route for success, fail, cancle, ipn)
+Route::match(['get', 'post'], '/sslcommerz/success', [OrderController::class, 'sslCommerzSuccess']);
+Route::match(['get', 'post'], '/sslcommerz/fail', [OrderController::class, 'sslCommerzFail']);
+Route::match(['get', 'post'], '/sslcommerz/cancel', [OrderController::class, 'sslCommerzCancel']);
+Route::match(['get', 'post'], '/sslcommerz/ipn', [OrderController::class, 'sslCommerzIpn']);

@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'sslcommerz' => [
+        'store_id' => env('SSLCOMMERZ_STORE_ID'),
+        'store_password' => env('SSLCOMMERZ_STORE_PASSWORD'),
+        'sandbox' => env('SSLCOMMERZ_SANDBOX'),
+        'base_url' => env('SSLCOMMERZ_BASE_URL'),
+        'init_url' => env('SSLCOMMERZ_INIT_URL'), // protected route
+        'validation_url' => env('SSLCOMMERZ_VALIDATION_URL'),
+        'success_url' => env('SSLCOMMERZ_SUCCESS_URL'),
+        'fail_url' => env('SSLCOMMERZ_FAIL_URL'),
+        'cancel_url' => env('SSLCOMMERZ_CANCEL_URL'),
+        'ipn_url' => env('SSLCOMMERZ_IPN_URL'),
+        'frontend_url' => env('FRONTEND_URL'),
+        'backend_url' => env('BACKEND_URL'),
+    ],
+
 ];

@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth:sanctum', 'checkadminRole']], function () {
     Route::put('/update-order-status/{id}', [AdminOrderController::class, 'updateOrderStatus']);
     Route::get('/shipping-charges-fetch', [ShippingController::class, 'shippingChargesFetch']);
     Route::post('/shipping-charges-createorupdate', [ShippingController::class, 'shippingChargesUpdate']);
+    Route::post('/admin-change-password', [AuthController::class, 'adminDashChangePass']);
 });
 
 // protectd route for customer panel
@@ -68,6 +69,7 @@ Route::group(['middleware' => ['auth:sanctum', 'checkcustomerRole']], function (
     Route::put('/update-customer-profile', [AccountController::class, 'customerProfile']);
     Route::get('/update-customer-profile-details', [AccountController::class, 'getDetais']);
     Route::post('/create-customer-payment-intent', [OrderController::class, 'createPaymentIntent']);
+    Route::post('/customer-change-password', [AccountController::class, 'customerDashChangePass']);
 
     // sslcommerz payment init route
     Route::post('/sslcommerz/init', [OrderController::class, 'sslCommerzInit']);

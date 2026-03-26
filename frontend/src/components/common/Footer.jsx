@@ -100,7 +100,7 @@ const Footer = () => {
                         <h2 className='mb-3'>Get in Touch</h2>
                         <ul>
                             <li>
-                                <a href="https://www.whatsapp.com/">+88 01764-280085</a>
+                                <a href="https://wa.me/+8801764280085" target='_blank'>+88 01764-280085</a>
                             </li>
                             <li>
                                 <a href="https://www.gmail.com/">sabbihkyau@gmail.com</a>

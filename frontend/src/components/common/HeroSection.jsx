@@ -1,14 +1,23 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import 'swiper/css/pagination';
 import SliderOneImage from '../../assets/images/banner-1.jpg';
 import SliderTwoImage from '../../assets/images/banner-2.jpg';
+import { Autoplay, Pagination } from 'swiper/modules';
 const HeroSection = () => {
     return (
         <section className='section-1'>
             <Swiper
+                modules={[Autoplay, Pagination]}
                 spaceBetween={0}
                 slidesPerView={1}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                }}
+                pagination={{ clickable: true }}
+                loop={true}
                 breakpoints={{
                     1024: {
                         slidesPerView: 1,

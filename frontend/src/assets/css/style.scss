@@ -108,9 +108,165 @@ ul {
     }
 }
 
+// header upper part css
+.header-top-bar {
+    background: linear-gradient(90deg, #1f1f1f 0%, #2d1b14 35%, #5c3b1e 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.header-top-content {
+    min-height: 32px;
+}
+
+.top-left-text,
+.top-center-text,
+.top-social-icons {
+    flex: 1;
+}
+
+.top-left-text {
+    color: rgba(220, 217, 217, 0.45);
+    transition: all 0.2s ease;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: left;
+    animation: textGlow 4s ease-in-out infinite;
+}
+
+// glowing animation adde
+@keyframes textGlow {
+    0% {
+        color: rgba(220, 217, 217, 0.45);
+    }
+
+    50% {
+        color: #ffffff;
+    }
+
+    100% {
+        color: rgba(220, 217, 217, 0.45);
+    }
+}
+
+.top-left-text::selection,
+.welcome-animated::selection {
+    background: transparent;
+    color: #ffffff;
+}
+
+// for mozilla 
+.top-left-text::-moz-selection,
+.welcome-animated::-moz-selection {
+    background: transparent;
+    color: inherit;
+}
+
+
+.top-center-text {
+    text-align: center;
+}
+
+.welcome-animated {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+    animation: moveSpin 4s ease-in-out infinite;
+}
+
+.top-social-icons {
+    justify-content: flex-end;
+}
+
+.social-icon-link {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+.social-icon-link.facebook:hover {
+    background: #1877f2;
+    color: #fff;
+}
+
+.social-icon-link.instagram:hover {
+    background: radial-gradient(circle at 30% 30%, #feda75, #d62976, #962fbf);
+    color: #fff;
+}
+
+.social-icon-link.youtube:hover {
+    background: #ff0000;
+    color: #fff;
+}
+
+.social-icon-link.linkedin:hover {
+    background: #0a66c2;
+    color: #fff;
+}
+
+.social-icon-link.whatsapp:hover {
+    background: #25d366;
+    color: #fff;
+}
+
+.social-icon-link.twitter:hover {
+    background: #000000;
+    color: #fff;
+}
+
+
+.social-icon-link:hover {
+    transform: translateY(-3px) scale(1.08);
+    background: #ffffff;
+    color: #3b2617;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes moveSpin {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+
+    20% {
+        transform: translateX(-18px) rotate(-8deg);
+    }
+
+    40% {
+        transform: translateX(18px) rotate(8deg);
+    }
+
+    60% {
+        transform: translateX(-10px) rotate(180deg);
+    }
+
+    80% {
+        transform: translateX(10px) rotate(320deg);
+    }
+
+    100% {
+        transform: translateX(0) rotate(360deg);
+    }
+}
+
 // header navbar part css
 
 header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: $primary-white;
 
     .navbar-expand-lg {
         .navbar-nav {
@@ -119,6 +275,27 @@ header {
                 font-size: 1.2em;
                 font-weight: 500;
                 color: $primary-black;
+            }
+
+            .nav-link.category-link span {
+                position: relative;
+                display: inline-block;
+                line-height: 1.2;
+            }
+
+            .nav-link.category-link span::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                bottom: -1px;
+                width: 0;
+                height: 1px;
+                background: #000;
+                transition: width 0.35s ease;
+            }
+
+            .nav-link.category-link:hover span::after {
+                width: 100%;
             }
         }
     }
@@ -287,5 +464,36 @@ footer .spotlight {
                 }
             }
         }
+    }
+}
+
+// aita for header upper media for responsive css
+@media (max-width: 767px) {
+    .header-top-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 4px 0;
+    }
+
+    .top-left-text,
+    .top-center-text,
+    .top-social-icons {
+        flex: unset;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .top-left-text {
+        font-size: 14px;
+    }
+
+    .welcome-animated {
+        font-size: 16px;
+    }
+
+    .social-icon-link {
+        width: 30px;
+        height: 30px;
     }
 }

@@ -29,6 +29,8 @@ import CustomerOrder from './components/customer/order/CustomerOrder.jsx'
 import CustomerOrderDetails from './components/customer/order/CustomerOrderDetails.jsx'
 import Shipping from './components/admin/shipping/Shipping.jsx'
 import Practice from './components/onlypractice/Practice.jsx'
+import DashPassCng from './components/admin/DashPassCng.jsx'
+import CusDasPassCng from './components/customer/CusDasPassCng.jsx'
 
 function App() {
 
@@ -47,6 +49,11 @@ function App() {
           <Route path='/admin/dashboard' element={
             <AdminRequireAuth>
               <Dashboard />
+            </AdminRequireAuth>
+          } />
+          <Route path='/admin/dashboard/password-change' element={
+            <AdminRequireAuth>
+              <DashPassCng />
             </AdminRequireAuth>
           } />
           <Route path='/admin/categories' element={
@@ -118,6 +125,12 @@ function App() {
           <Route path='/account/dashboard' element={
             <CustomerRequireAuth>
               <CustomerDashboard />
+            </CustomerRequireAuth>
+          }
+          />
+          <Route path='/account/dashboard/password-change' element={
+            <CustomerRequireAuth>
+              <CusDasPassCng />
             </CustomerRequireAuth>
           }
           />
